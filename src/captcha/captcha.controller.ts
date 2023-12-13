@@ -1,4 +1,4 @@
-import {Body, Controller, Get, HttpCode, HttpStatus, Post} from '@nestjs/common'
+import {Body, Controller, Get, Post} from '@nestjs/common'
 import {CaptchaService} from './captcha.service'
 
 @Controller('captcha')
@@ -12,7 +12,6 @@ export class CaptchaController { // 生成验证码
     }
 
     @Post('/verifyCaptcha') // 验证验证码
-    @HttpCode(HttpStatus.OK) // 设置状态码
     verifyCaptcha(@Body() body): boolean | string {
         return this.captchaService.verifyCaptcha(body.code) // 验证验证码
     }
