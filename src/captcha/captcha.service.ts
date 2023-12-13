@@ -3,7 +3,7 @@ import * as svgCaptcha from 'svg-captcha'; // 引入svg-captcha模块
 
 @Injectable() // 使用Injectable装饰器
 export class CaptchaService {
-    private captchaMap = new Map<string, string>()
+    private captcha = String()
     generateCaptcha() { // 生成验证码
         const captcha = svgCaptcha.create({ // 生成svg图片
             size: 4, // 验证码长度
@@ -15,11 +15,15 @@ export class CaptchaService {
             color: true, // 验证码的字符是否有颜色，默认没有，如果设定了背景，则默认有
             background: '#eee' // 验证码图片背景颜色
         })
-        const id = Date.now().toString() // 生成唯一id
-        this.captchaMap.set(id, captcha.text) // 将id和验证码文本存入map
-        return {
-            id,
-            data: `data:image/svg+xml;base64,${Buffer.from(captcha.data).toString('base64')}` // 将svg图片转为base64编码
+        this.captcha = captcha.text.toLowerCase() // 将验证码文本转为小写
+         // 将svg图片转为base64编码
+        return `data:image/svg+xml;base64,${Buffer.from(captcha.data).toString('base64')}`
+    }
+    verifyCaptcha(captcha: string): boolean | string { // 验证验证码
+        if (captcha === this.captcha) {
+            return true
+        } else {
+            return ''
         }
     }
 }

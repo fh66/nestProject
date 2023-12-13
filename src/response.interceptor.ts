@@ -9,7 +9,7 @@ export class TransformResponseInterceptor<T> implements NestInterceptor { // 实
             return {
                 code: context.switchToHttp().getResponse().statusCode,
                 data,
-                message: '请求成功'
+                message: data ? '请求成功' : '请求失败'
             }
         }))
     }

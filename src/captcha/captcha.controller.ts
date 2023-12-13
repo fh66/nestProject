@@ -1,14 +1,19 @@
-import { Controller, Get, Res } from '@nestjs/common'
-import { CaptchaService } from './captcha.service'
+import {Body, Controller, Get, HttpCode, HttpStatus, Post} from '@nestjs/common'
+import {CaptchaService} from './captcha.service'
 
 @Controller('captcha')
-export class l { // 生成验证码
+export class CaptchaController { // 生成验证码
     constructor(private readonly captchaService: CaptchaService) {} // 注入CaptchaService
 
     @Get()
-    getCaptcha(@Res() res): void{ // 生成验证码
-        const captcha = this.captchaService.generateCaptcha() // 生成验证码
-        res.type('url') // 设置返回的数据类型
-        res.send(captcha.data) // 返回验证码图片
+    getCaptcha(): string{ // 生成验证码
+         // 生成验证码
+        return this.captchaService.generateCaptcha()
+    }
+
+    @Post('/verifyCaptcha') // 验证验证码
+    @HttpCode(HttpStatus.OK) // 设置状态码
+    verifyCaptcha(@Body() body): boolean | string {
+        return this.captchaService.verifyCaptcha(body.code) // 验证验证码
     }
 }
