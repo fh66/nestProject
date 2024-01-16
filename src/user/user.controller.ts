@@ -6,7 +6,7 @@ export class UserController {
     constructor(private readonly userService: UserService) {} // 注入UserService
 
     @Post('/createUser') // 创建用户
-    createUser(@Body() body) {
+    createUser(@Body() body):string {
         return this.userService.createUser(body)
     }
 }
